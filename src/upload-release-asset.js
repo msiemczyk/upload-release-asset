@@ -13,15 +13,18 @@ async function run() {
     const assetName = core.getInput('asset_name', { required: true });
     const assetContentType = core.getInput('asset_content_type', { required: true });
 
+    core.info("assetPath path is " + assetPath);
+    core.error(`filePath ${filePath}`);
+    
     // Determine content-length for header to upload asset
     const contentLength = filePath => fs.statSync(filePath).size;
 
-    core.debug("Content length is " + contentLength)
+    core.debug("Content length is " + contentLength);
     
     // Setup headers for API call, see Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-upload-release-asset for more information
     const headers = { 'content-type': assetContentType, 'content-length': contentLength(assetPath) }
     
-    core.debug("headers is " + headers)
+    core.debug("headers is " + headers);
     
     // Upload a release asset
     // API Documentation: https://developer.github.com/v3/repos/releases/#upload-a-release-asset
@@ -41,7 +44,9 @@ async function run() {
     // Set the output variable for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
     core.setOutput('browser_download_url', browserDownloadUrl);
   } catch (error) {
-    core.debug(error)
+    core.error(`Error ${error}`);
+    
+    core.debug(error);
     core.setFailed(error.message);
   }
 }
