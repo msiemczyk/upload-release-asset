@@ -16,6 +16,8 @@ async function run() {
     // Determine content-length for header to upload asset
     const contentLength = filePath => fs.statSync(filePath).size;
 
+    console.log("Content length is " + contentLength)
+    
     // Setup headers for API call, see Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-upload-release-asset for more information
     const headers = { 'content-type': assetContentType, 'content-length': contentLength(assetPath) };
 
@@ -37,6 +39,7 @@ async function run() {
     // Set the output variable for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
     core.setOutput('browser_download_url', browserDownloadUrl);
   } catch (error) {
+    console.log(error)
     core.setFailed(error.message);
   }
 }
